@@ -1,4 +1,4 @@
- function trekkingMania(input) {
+function solve(input) {
     let index = 0;
     let group = Number(input[index]);
     index++;
@@ -39,5 +39,14 @@
          console.log(p5.toFixed(2)+ "%");
   
  }
-
- trekkingMania(["5", "25", "41", "31", "250", "6"]);
+ solve(["10",
+ "10",
+ "5",
+ "1",
+ "100",
+ "12",
+ "26",
+ "17",
+ "37",
+ "40",
+ "78"])
