@@ -1,29 +1,41 @@
-function cinema(input) {
- let projectionType = input[0];
- let rows = Number(input[1]);
- let cols = input[2];
+function solve(input) {
+   let capacity = Number(input.shift());
 
- let totalTickets = rows * cols;
- let income = 0;
+    let command = input.shift();
+    let profit = 0;
+    let fullCinema = false;
 
- switch(projectionType) {
-   case "Premiere":
-      income = totalTickets * 12.00;
-      break;
+    while(command !== "Movie time!") {
+        let people = Number(command);
+        capacity -= people;
+       
+        if(capacity < 0)  {
+            console.log("The cinema is full.");
+            fullCinema = true;
+            break;
+        }
 
-      case "Normal":
-      income = totalTickets * 7.50;
-      break;
+        if (people % 3 == 0) {
+            profit += (people * 5 - 5);
+        } else {
+            profit += people * 5;
+        }
 
-      case "Discount":
-         income = totalTickets * 5.00;
-         break;
+        command = input.shift();
+    }
 
- }
-         console.log(`${income.toFixed(2)} leva`);
- }
+    if (!fullCinema){
+        console.log(`There are ${capacity} seats left in the cinema.`);
+    }
+    console.log(`Cinema income - ${profit} lv.`);
+  }
 
 
-//cinema("Premiere", "10", "12");
-//cinema("Normal" "21" "13");
-cinema(["Discount", "12", "38"]);
+solve(["60",
+"10",
+"6",
+"3",
+"20",
+"15",
+"Movie time!"])
+
