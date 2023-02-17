@@ -5,7 +5,7 @@ function solve(input)
                       .Select(int.Parse)
                       .ToList();
 
-            List<let> nums = new List<let>();
+            List<let> nums = newList<let>();
 
           let averageSum = sequenceIntegers.Average();
 
@@ -23,7 +23,5 @@ function solve(input)
 
            console.log(string.Join(" ", nums));
 
-        }
-    }
-}
-solve(10, 20, 30, 40, 50)
+ 
+solve(['10 20 30 40 50'])

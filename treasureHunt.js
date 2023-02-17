@@ -39,13 +39,13 @@ function solve(array){
         average += element;
     }
     console.log(`Average treasure gain: ${(average / initialLoot.length).toFixed(2)} pirate credits.`)
-}else {
+} else {
     console.log('Failed treasure hunt.')
+ }
 }
-}
-solve(Gold|Silver|Bronze|Medallion|Cup,
-    Loot Wood Gold Coins,
-    Loot Silver Pistol,
-    Drop 3,
-    Steal 3,
-    Yohoho!)
+solve((["Diamonds|Silver|Shotgun|Gold",
+"Loot Silver Medals Coal",
+"Drop -1",
+"Drop 1",
+"Steal 6",
+"Yohoho!"]))

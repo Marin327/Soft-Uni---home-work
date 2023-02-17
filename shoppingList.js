@@ -5,7 +5,6 @@ function solve(input) {
 
     while (line != 'Go Shopping!') {
         let [command, item, newItem] = line.split(' ');
-
         switch (command) {
             case 'Urgent':
                 urgent(groceries, item);
@@ -55,7 +54,7 @@ function solve(input) {
         }
     }
 }
-solve(Tomatoes!Potatoes!Bread,
-    Unnecessary Milk,
-    Urgent Tomatoes,
-    Go Shopping!)
+solve(["Tomatoes!Potatoes!Bread",
+"Unnecessary Milk",
+"Urgent Tomatoes",
+"Go Shopping!"])

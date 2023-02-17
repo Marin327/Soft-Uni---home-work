@@ -53,10 +53,7 @@ function solve(input = []) {
         console.log(`Cupid has failed ${count} places.`);
     }
 }
-solve(2@4@2,
-    Jump 2,
-    Jump 2,
-    Jump 8,
-    Jump 3,
-    Jump 1,
-    Love!)
+solve(["10@10@10@2",
+"Jump 1",
+"Jump 2",
+"Love!"])

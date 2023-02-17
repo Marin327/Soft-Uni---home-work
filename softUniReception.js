@@ -3,7 +3,9 @@ function solve(input = []) {
     let emp2Eff = +input.shift();
     let emp3Eff = +input.shift();
     let people = +input.shift();
+
     let neededHours = 0;
+    
     let answerPerHour = emp1Eff + emp2Eff + emp3Eff;
    
     while (people > 0) {
@@ -17,7 +19,4 @@ function solve(input = []) {
    
     console.log(`Time needed: ${neededHours}h.`);
   }
-  solve(5,
-    6,
-    4,
-    20)
+  solve(['5','6','4','20'])

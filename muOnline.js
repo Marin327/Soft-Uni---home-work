@@ -50,4 +50,4 @@ function solve(input) {
   
     console.log(`You've made it!\nBitcoins: ${totalBitcoins}\nHealth: ${initialHealth}`);
 }
-solve(rat 10|bat 20|potion 10|rat 10|chest 100|boss 70|chest 1000)
+solve(["cat 10|potion 30|orc 10|chest 10|snake 25|chest 110"])

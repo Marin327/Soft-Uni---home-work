@@ -5,7 +5,7 @@ function solve(input) {
     //console.log(plunderForDay);
     let expectedPlunder = Number(input.shift());
     //console.log(expectedPlunder);
-    let total= 0;
+    let total = 0;
     for (let i = 1; i <= days; i++) {
         total += plunderForDay;
         if (i % 3 === 0) {
