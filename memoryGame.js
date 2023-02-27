@@ -1,16 +1,13 @@
 function solve(input) {
-    const numbers = input
-        .shift()
-        .trim()
-        .split(' ');
+    const numbers = input.shift().trim().split(' ');
     let moves = 0;
+
     while (numbers.length > 1 && input[0].toLowerCase() !== 'end') {
-        let [index1, index2] = input
-            .shift()
-            .split(' ');
+        let [index1, index2] = input.shift() .split(' ');
         index1 = Number(index1);
         index2 = Number(index2);
         moves++;
+
         if (index1 < 0 ||
             index1 >= numbers.length ||
             index1 === index2 ||
@@ -40,12 +37,10 @@ function solve(input) {
         console.log(`${numbers.join(' ')}`);
     }
 }
-solve([
-    "1 1 2 2 3 3 4 4 5 5",
+solve([ "1 1 2 2 3 3 4 4 5 5",
     "1 0",
     "-1 0",
     "1 0",
     "1 0",
     "1 0",
-    "end"
-])
+    "end"])

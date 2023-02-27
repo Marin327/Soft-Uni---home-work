@@ -5,13 +5,10 @@ function solve(input = []) {
     let people = +input.shift();
 
     let neededHours = 0;
-    
     let answerPerHour = emp1Eff + emp2Eff + emp3Eff;
-   
     while (people > 0) {
       people -= answerPerHour;
       neededHours++;
-   
       if (neededHours % 4 === 0) {
         neededHours++;
       }
