@@ -1,0 +1,5 @@
+function coffeMachine(arr) {
+
+
+}
+coffeMachine([""])
