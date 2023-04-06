@@ -1,44 +1,25 @@
-function worldTour(arr) {
-    let stops = arr.shift()
-    arr = arr.slice(0, arr.indexOf("Travel"))
-    const actions = {
-        "Add Stop": addStop,
-        "Remove Stop": removeStop,
-        Switch: switchIt,
-    }
+taskOne = (input = []) => {
+    let string = input.shift();
 
-    function addStop(i, s) {
-        if (stops[i] !== undefined) {
-            stops = stops.substring(0, i) + s + stops.substring(i)
+    while ((cmd = input.shift().split(':'))[0] !== 'Travel') {
+        if (cmd[0] === 'Add Stop') {
+            const index = +cmd[1];
+            if (string[index]) {
+                string = string.substring(0, index) + cmd[2] + string.substring(index);
+            }
+        } else if (cmd[0] === 'Remove Stop') {
+            const [start, end] = cmd.slice(1).map(Number);
+            if (string[start] && string[end]) {
+                string = string.substring(0, start) + string.substring(end + 1);
+            }
+        } else {
+            // 'Switch'
+            string = string.replace(new RegExp(cmd[1], 'g'), cmd[2]);
         }
+        console.log(string);
     }
 
-    function removeStop(x, y) {
-        if (stops[x] !== undefined && stops[y] !== undefined) {
-            stops = stops.slice(0, x) + stops.slice(y + 1)
-        }
-    }
+    console.log(`Ready for world tour! Planned stops: ${string}`);
+};
 
-    function switchIt(a, b) {
-        if (stops.indexOf(a) !== -1) {
-            b = b.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&")
-            const regx = new RegExp(a, "g")
-            stops = stops.replace(regx, b)
-        }
-    }
-
-    for (let i = 0; i < arr.length; i++) {
-        const [action, x, y] = arr[i]
-            .split(":")
-            .map(x => (isNaN(x) ? x : Number(x)))
-        actions[action](x, y)
-        console.log(stops)
-    }
-    console.log(`Ready for world tour! Planned stops: ${stops}`)
-}
-worldTour(["Hawai::Cyprys-Greece",
-    "Add Stop:7:Rome",
-    "Remove Stop:11:16",
-    "Switch:Hawai:Bulgaria",
-    "Travel"
-])
+taskOne(['Hawai::Cyprys-Greece', 'Add Stop:7:Rome', 'Remove Stop:11:16', 'Switch:Hawai:Bulgaria', 'Travel']);

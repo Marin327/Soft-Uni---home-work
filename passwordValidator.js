@@ -1,52 +1,59 @@
-function solve(password) {
-    if (lengthValidator(password) && isLetterDigit(password) && numCountMinimum(password)) {
-        console.log('Password is valid');
-    } else {
-        if (!lengthValidator(password)) {
-            console.log('Password must be between 6 and 10 characters')
-        }
-        if (!isLetterDigit(password)) {
-            console.log('Password must consist only of letters and digits');
-        }
-        if (!numCountMinimum(password)) {
-            console.log(`Password must have at least 2 digits`);
-        }
-    }
+function passwordValidator(input) {
+    let password = input.shift();
+    commands = input.shift();
 
-    function isDigit(num) {
-        return num >= 48 && num <= 57;
-    }
-
-    function numCountMinimum(password) {
-        let count = 0;
-        // let isDigit = (x) => x >= 48 && x <= 57;
-
-        for (let char of password) {
-            let charValue = char.charCodeAt(0);
-            if (isDigit(charValue)) {
-                count++;
+    while (commands !== 'Complete') {
+        let asd = commands.split(' ');
+        command = asd[0];
+        if (command === 'Insert') {
+            let char = asd[2];
+            let n = asd[1];
+            if (n < password) {
+                let password = password[n] + char + password[n + 1];
+                console.log(password);
             }
-        }
-
-        return count >= 2;
-    }
-
-    function lengthValidator(password) {
-        return password.length >= 6 && password.length <= 10;
-    }
-
-    function isLetterDigit(password) {
-        let isLowerLetter = (x) => x >= 87 && x <= 122;
-        let isUpperLetter = (x) => x >= 65 && x <= 90;
-
-        for (let char of password) {
-            let charValue = char.charCodeAt(0);
-            if (!isDigit(charValue) && !isLowerLetter(charValue) && !isUpperLetter(charValue)) {
-                return false;
+        } else {
+            if (command === 'Make') {
+                let command = asd[1];
+                let n = asd[2];
+                if (command === 'Upper') {
+                    let password = password[n] + password[n].upper() + password[n + 1];
+                    console.log(password);
+                }
+            } else if (command === 'Lower') {
+                let password = password[n] + password[n].lower() + password[n + 1];
+                console.log(password);
+            
+        } else if (command === 'Replace') {
+            let char = asd[1];
+            n = asd[2];
+            if (char not in password) {} else {
+                let sum = ord(char) + n;
+                let char1 = chr(sum);
+                password = password.replace(char, char1)
+                console.log(password);
             }
+        } else if (command === 'Validation') {
+            if (password < 8) {
+                console.log('Password must be at least 8 characters long');
+            } else if (password.isnum() == False && '_!' && (not in password)) {
+                console.log('Password must consist only of letters, digits and _!');
+            } else if (not any(x.isupper() for (x in password))) {
+                console.log('Password must consist at least one uppercase letter!');
+            } else if (not any(x.islower() for (x in password))) {
+                print('Password must consist at least one lowercase letter!');
+            } else if (not any(x.isdigit() for (x in password))) {
+                console.log('Password must consist at least one digit!');
+            }
+            commands = input.shift();
         }
-
-        return true;
+      }
     }
 }
-solve('MyPass123')
+passwordValidator(['invalidpassword*',
+    'Add 2 p',
+    'Replace i -50',
+    'Replace * 10',
+    'Make Upper 2',
+    'Validation',
+    'Complete'])

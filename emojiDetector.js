@@ -1,31 +1,21 @@
-function emojiDetector(arr) {
+emojiDetector = ([text = '']) => {
+    const threshold = text.match(/[0-9]/g).reduce((a, b) => a * b, 1);
+    let [emojis, cool] = [0, []];
+    const pattern = /(\*\*|::)(?<emoji>[A-Z]{1}[a-z]{2,})\1/g;
+    while ((result = pattern.exec(text))) {
+        const emoji = result.groups.emoji;
+        const sum = emoji.split('').reduce((sum, char) => sum + char.charCodeAt(), 0);
+        emojis++;
+        if (sum > threshold) {
+            cool.push(result[0]);
+        }
+    }
 
-    const cool = arr[0]
-        .split("")
-        .filter(x => !isNaN(x))
-        .filter(x => x !== " " && x !== "")
-        .join("")
-        .split("")
-        .map(Number)
-        .reduce((a, v) => a * v, 1)
-    const r = /::[A-Z][a-z]{2,}::|\*\*[A-Z][a-z]{2,}\*\*/g
-    let matches = arr[0].match(r).filter(x => x !== "")
-    const emojis = matches.length
-    matches = matches.filter(
-        x =>
-        x
-        .split(x[0])
-        .filter(x => x !== "")
-        .join("")
-        .split("")
-        .reduce((a, v) => a + v.charCodeAt(0), 0) > cool
-    )
-    console.log(`Cool threshold: ${cool}`);
+    console.log(`Cool threshold: ${threshold}`);
     console.log(`${emojis} emojis found in the text. The cool ones are:`);
-    matches.forEach(x => console.log(x));
-}
-emojiDetector(["In the Sofia Zoo there are 311 animals in total! ::Smiley:: This includes 3 **Tigers**",
-    "1 ::Elephant:", "12 **Monk3ys**",
-    "a **Gorilla::",
-    "5 ::fox:es: and 21 different types of :Snak::Es::. ::Mooning:: **Shy**"
-])
+    console.log(cool.join('\n'));
+};
+
+emojiDetector([
+    'In the Sofia Zoo there are 311 animals in total! ::Smiley:: This includes 3 **Tigers**, 1 ::Elephant:, 12 **Monk3ys**, a **Gorilla::, 5 ::fox:es: and 21 different types of :Snak::Es::. ::Mooning:: **Shy**',
+]);

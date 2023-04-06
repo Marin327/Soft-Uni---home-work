@@ -1,16 +1,8 @@
-function destinationMapper(data) {
-        const regx = new RegExp("=[A-Z][A-Za-z]{2,}=|\\/[A-Z][A-Za-z]{2,}\\/", "g")
-        let matches = data.match(regx) || []
-    
-        matches = matches.map(x =>
-            x[0] === "="
-                ? x.split("=").filter(x => x !== "")
-                : x.split("/").filter(x => x !== "")
-        )
-        const points = matches.reduce((a, v) => a + v[0].length, 0)
-        matches = matches.map(x => x.join(""))
-    
-        console.log(`Destinations: ${matches.join(", ")}`)
-        console.log(`Travel Points: ${points}`)
-    }
-destinationMapper("=Hawai=/Cyprus/=Invalid/invalid==i5valid=/I5valid/=i=")
+taskTwo = (text = '') => {
+    const matches = (text.match(/([=\/])([A-Z][A-Za-z]{2,})\1/g) || []).map((x) => x.substring(1, x.length - 1));
+    const points = (matches || []).reduce((sum, el) => sum + el.length, 0);
+    console.log(`Destinations: ${matches.join(', ')}`.trim());
+    console.log(`Travel Points: ${points}`);
+};
+
+taskTwo('=Hawai=/Cyprus/=Invalid/invalid==i5valid=/I5valid/=i=');
