@@ -1,65 +1,148 @@
 function solve() {
-    const firstOptElement = document.createElement("option");
-    const secondOptElement = document.createElement("option");
-    firstOptElement.value = "binary";
-    secondOptElement.value = "hexadecimal";
-    firstOptElement.innerHTML = "Binary";
-    secondOptElement.innerHTML = "Hexadecimal";
+    const getInputField = n =>
+        document.querySelector(`#container > input[type=text]:nth-child(${n})`)
+    const inputs = [getInputField(1), getInputField(2), getInputField(3)]
+    const html = {
+        moviesList: document.querySelector("#movies > ul"),
+        archivesList: document.querySelector("#archive > ul"),
+    }
 
-    const menuToElement = document.getElementById("selectMenuTo");
-    menuToElement.appendChild(firstOptElement);
-    menuToElement.appendChild(secondOptElement);
+    const checkValidInput = (arr, num) =>
+        arr.every(x => x !== "") && !isNaN(Number(num))
+    const clearInputs = arr => arr.map(x => (x.value = ""))
 
-    const button = document.getElementsByTagName("button")[0];
+    function onScreenTemplate(n, h, p) {
+        const wrapper = document.createElement("li")
 
-    button.addEventListener("click", function () {
-        const numberInput = document.getElementById("input");
+        wrapper.innerHTML = `<span>${n}</span><strong>Hall: ${h}</strong>
+<div><strong>${p.toFixed(2)}</strong><input placeholder="Tickets Sold"/>
+<button>Archive</button></div>`
 
-        const outputResult = document.getElementById("result");
+        return wrapper
+    }
 
-        if(menuToElement.value === 'binary') {
-            outputResult.value = Number(numberInput.value).toString(2);
-        } else if(menuToElement.value === "hexadecimal") {
-            outputResult.value = Number(numberInput.value).toString(16).toUpperCase();
+    function archivedTemplate(n, p) {
+        const wrapper = document.createElement("li")
+
+        wrapper.innerHTML = `<span>${n}</span>
+<strong>Total amount: ${p.toFixed(2)}</strong>
+<button>Delete</button>`
+
+        return wrapper
+    }
+
+    document.addEventListener("click", e => {
+        e.preventDefault()
+
+        if (e.target.tagName === "BUTTON") {
+            const [n, h, p] = inputs.map(x => x.value)
+
+            const buttons = {
+                "On Screen": () => {
+                    if (checkValidInput([n, h, p], p)) {
+                        clearInputs(inputs)
+                        html.moviesList.appendChild(
+                            onScreenTemplate(n, h, Number(p))
+                        )
+                    }
+                },
+                Archive: e => {
+                    const ticketsSold = e.previousElementSibling.value
+
+                    if (checkValidInput([ticketsSold], ticketsSold)) {
+                        const parent = e.parentNode.parentNode
+                        const name = parent.children[0].innerHTML
+                        const price =
+                            e.previousElementSibling.previousElementSibling
+                                .innerHTML
+
+                        html.archivesList.appendChild(
+                            archivedTemplate(name, ticketsSold * Number(price))
+                        )
+                        parent.remove()
+                    }
+                },
+                Delete: e => e.parentNode.remove(),
+                Clear: () => (html.archivesList.innerHTML = ""),
+            }
+
+            buttons[e.target.textContent](e.target)
         }
-    });
-
+    })
 }
-
 //
 console.log("---------");
-
 //
 
 function solve() {
+    const getInputField = n =>
+        document.querySelector(`#container > input[type=text]:nth-child(${n})`)
+    const inputs = [getInputField(1), getInputField(2), getInputField(3)]
     const html = {
-        numberField: document.getElementById("input"),
-        convertTo: document.getElementById("selectMenuTo"),
-        output: document.getElementById("result"),
-        button: document.querySelector("#container > button"),
+        moviesList: document.querySelector("#movies > ul"),
+        archivesList: document.querySelector("#archive > ul"),
     }
-    const makeOptions = arr =>
-        arr.map(x => {
-            const option = document.createElement("option")
-            x = x.toLocaleLowerCase()
-            option.value = x
-            option.text = `${x.charAt(0).toLocaleUpperCase()}${x.slice(1)}`
-            return option
-        })
-    const print = n => (html.output.value = n)
-    makeOptions(["binary", "hexadecimal"]).forEach(x => html.convertTo.add(x))
 
-    function convert(to, n) {
-        n = Number(n) || 0
-        const formats = {
-            binary: n => (n >>> 0).toString(2),
-            hexadecimal: n => n.toString(16).toLocaleUpperCase(),
+    const checkValidInput = (arr, num) =>
+        arr.every(x => x !== "") && !isNaN(Number(num))
+    const clearInputs = arr => arr.map(x => (x.value = ""))
+
+    function onScreenTemplate(n, h, p) {
+        const wrapper = document.createElement("li")
+
+        wrapper.innerHTML = `<span>${n}</span><strong>Hall: ${h}</strong>
+<div><strong>${p.toFixed(2)}</strong><input placeholder="Tickets Sold"/>
+<button>Archive</button></div>`
+
+        return wrapper
+    }
+
+    function archivedTemplate(n, p) {
+        const wrapper = document.createElement("li")
+
+        wrapper.innerHTML = `<span>${n}</span>
+<strong>Total amount: ${p.toFixed(2)}</strong>
+<button>Delete</button>`
+
+        return wrapper
+    }
+
+    document.addEventListener("click", e => {
+        e.preventDefault()
+
+        if (e.target.tagName === "BUTTON") {
+            const [n, h, p] = inputs.map(x => x.value)
+
+            const buttons = {
+                "On Screen": () => {
+                    if (checkValidInput([n, h, p], p)) {
+                        clearInputs(inputs)
+                        html.moviesList.appendChild(
+                            onScreenTemplate(n, h, Number(p))
+                        )
+                    }
+                },
+                Archive: e => {
+                    const ticketsSold = e.previousElementSibling.value
+
+                    if (checkValidInput([ticketsSold], ticketsSold)) {
+                        const parent = e.parentNode.parentNode
+                        const name = parent.children[0].innerHTML
+                        const price =
+                            e.previousElementSibling.previousElementSibling
+                                .innerHTML
+
+                        html.archivesList.appendChild(
+                            archivedTemplate(name, ticketsSold * Number(price))
+                        )
+                        parent.remove()
+                    }
+                },
+                Delete: e => e.parentNode.remove(),
+                Clear: () => (html.archivesList.innerHTML = ""),
+            }
+
+            buttons[e.target.textContent](e.target)
         }
-
-        return formats[to](n)
-    }
-
-    html.button.addEventListener("click", () =>
-        print(convert(html.convertTo.value, html.numberField.value))
-    )
+    })
 }
