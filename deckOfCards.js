@@ -1,43 +1,43 @@
-function deckOfCards(input) {
+function solve(cards) {
 
-    let cards = input.shift().split(", ");
-    let numCommands = Number(input.shift());
 
-    for (let i = 0; i < numCommands; i++) {
-        let command = input[i].split(", ");
-        let args = command.slice(1);
+    const deck = [];
 
-        switch (command[0]) {
-            case "Add":
-                if (!cards.includes(args[0])) {
-                    cards.push(args[0]);
-                    console.log('Card successfully added');
-                } else {
-                    console.log('Card is already in the deck');
-                }
-                break;
-
-            case "Insert":
-                let index = Number(args[0]);
-                if (index < 0 || index >= cards.length) {
-                    console.log('Index out of range');
-                } else {
-                    cards.splice(index, 0, args[1]);
-                    console.log('Card successfully added');
-                }
-                break;
-                
-            case "Remove":
-                if (cards.includes(args[0])) {
-                    cards.splice(cards.indexOf(args[0]), 1);
-                    console.log('Card successfully removed');
-                } else {
-                    console.log('Card not found');
-                }
-                break;
+    for (const card of cards) {
+        const face = card.slice(0, -1);
+        const suit = card.slice(-1);
+        try {
+            const cardObj = createCard(face, suit)
+            deck.push(cardObj);
+        } catch (ex) {
+            console.log(`Invalid card: ` + card);
+            return;
         }
     }
-    console.log(cards.join(" "));
+    console.log(deck.join(' '));
+
+
+    function createCard(face, suit) {
+        const suits = {
+            S: '\u2660',
+            H: '\u2665',
+            D: '\u2666',
+            C: '\u2663'
+        };
+        const faces = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+
+        if (faces.indexOf(face) == -1) throw Error(`Invalid face ${face}!`);
+        if (!suits.hasOwnProperty(suit)) throw Error(`Invalid suit ${suit}!`);
+
+        return {
+            face,
+            suit: suits[suit],
+            toString() {
+                return this.face + this.suit;
+            }
+        }
+    }
 }
 
-deckOfCards(["Ace of Diamonds, Queen of Hearts, King of Clubs", "3", "Add, King of Diamonds", "Insert, 2, Jack of Spades", "Remove, Ace of Diamonds"]);
+solve(['AS', '10D', 'KH', '2C'])
