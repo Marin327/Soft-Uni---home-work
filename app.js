@@ -1,41 +1,38 @@
-function validate() {
-    const input = document.getElementById("email");
-    input.addEventListener("change", () => {
-        if(input.value.match(/^[a-z-\.]+@[a-z-\.]+\.[a-z]{2,4}/)) {
-            input.classList.remove("error");
-        } else {
-            input.classList.add("error");
-        }
-    });
-}
-//
-console.log("---");
-//
-function validate() {
-    const pattern = new RegExp(/^\S+@\S+\.\S+$/gm);
-    const inputElement  = document.getElementById('email');
-    inputElement.addEventListener('change', onChane);
-    function onChane(ev){
-        ev.target.classList.remove('error');
-        if(!pattern.test(ev.target.value)){
-            ev.target.classList.add('error');
-        }
-    }
-}
-//
-console.log("------");
-//
-function validate() {
-    const input = document.getElementById("email")
+class Textbox {
+    _value;
+    _elements;
+    _invalidSymbols;
 
-    function isValidEmail(str) {
-        if (/^[a-z]+@[a-z]+\.[a-z]+/g.test(str)) return true
-
-        return false
+    constructor(selector, regex) {
+        this._elements = document.querySelectorAll(selector);
+        this.elements
+            .forEach(element =>
+                element.addEventListener('input', (ev) => {
+                    this.elements
+                        .forEach(element => element.value = ev.target.value);
+                }))
+        this._invalidSymbols = regex;
     }
 
-    function applyStyle(e, email) {
-        e.className = isValidEmail(email) ? "" : "error"
+    get elements() {
+        return Array.from(this._elements);
     }
-    input.addEventListener("change", e => applyStyle(e.target, e.target.value))
+
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        this._value = value;
+        this.elements.forEach(el => el.value = value);
+    }
+
+    isValid() {
+        return !this._invalidSymbols.test(this.value);
+    }
 }
+
+let textbox = new Textbox(".textbox",/[^a-zA-Z0-9]/);
+let inputs = document.getElementsByClassName('.textbox');
+
+inputs.addEventListener('click',function(){console.log(textbox.value);});
