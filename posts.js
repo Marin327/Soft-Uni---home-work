@@ -1,4 +1,4 @@
-function solution() {
+function solution1() {
     class Post {
         constructor(title, content) {
             this.title = title;
@@ -48,7 +48,7 @@ function solution() {
     return {Post, SocialMediaPost, BlogPost};
 }
 
-const classes = solution();
+const classes = solution1();
 let post = new classes.Post("Post", "Content");
 
 console.log(post.toString());
@@ -167,3 +167,4 @@ console.log(comment.toString())
 console.log("-------------");
 
 //
+
