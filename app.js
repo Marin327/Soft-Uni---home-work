@@ -1,203 +1,211 @@
+// function solve() {
+// const nameInput = document.getElementById('recipientName');
+// const titleInput = document.getElementById('title');
+// const messageInput = document.getElementById('message');
+// const deleted = document.querySelector('.delete-list');
+// const sent = document.querySelector('.sent-list');
+
+// document.getElementById('add').addEventListener('click', createMail);
+// document.getElementById('reset').addEventListener('click', onReset);
+
+// //1. create mail process
+// // - add listener to create button
+// // - read input fields
+// // = validate all fields are enteres
+// // - create mail element from input
+// // - add event listener to send button
+// // - add event listener to delete button
+// // - clear input fields
+
+
+// function createMail(event) {
+// event.preventDefault();
+// const name = nameInput.value;
+// const title = titleInput.value;
+// const message = messageInput.value;
+
+// if(name == '' || title == '' || message == '') {
+//     return;
+// }
+// const element = document.createElement('li');
+// element.innerHTML = `
+// <h4>Title: ${title}</h4>
+// <h4>Recipient Name: ${name}</h4>
+// <span>${message}</span>
+// <div id="list-action">
+//    <button type="submit" id="send">Send</button>
+//    <button type="submit" id="delete">Delete</button>
+//  </div>`;
+
+//  element.querySelector('#send').addEventListener('click', sendMail);
+// element.querySelector('#delete').addEventListener('click', deleteMail);
+// list.appendChild(element);
+// return resetInput();
+
+// //2. send Mail process
+// function sendMail(event) {
+// const sentMailElement = document.createElement('li');
+// sentMailElement.innerHTML = `
+// <span>To: ${name}</span>
+// <span>Title: ${title}</span>
+// <div class="btn">
+//     <button type="submit" class="delete">Delete</button>
+// </div>`;
+
+// sentMailElement.querySelector('.delete').addEventListener('click', () => {
+// const deletedMailElement = document.createElement('li');
+// deletedMailElement.innerHTML = ` 
+// <span>To: ${name}</span>
+// <span>Title: ${title}</span>`;
+
+// deleted.appendChild(deletedMailElement);
+// sentMailElement.remove();
+// });
+// sent.appendChild(sentMailElement);
+// element.remove();
+// }
+
+
+// //3. delete mail process
+// // - read data from closure
+// // - create deleted mail element
+// // - add element to dom
+// // - remove formet element from dom
+// function deleteMail() {
+// const deletedMailElement = document.createElement('li');
+// deletedMailElement.innerHTML = `
+// <span>To:${name}</span>
+// <span>Title: ${title}</span>`;
+// deleted.appendChild(deletedMailElement);
+// element.remove();
+//  }
+// }
+// function onReset(event) {
+//     event.preventDefault();
+//     resetInput();
+// }
+
+// //3. delete mail process
+// // - read data from closure
+// // - create deleted mail element
+// // - add element to dom
+// // - remove formet element from dom
+
+// //4. reset process
+// // add listener to reset button
+// // - clear input fields
+//  function resetInput() {
+// nameInput.value = '';
+// titleInput.value = '';
+// messageInput.value = '';
+//  }
+// }
+
+// solve()
+
+//
+
 function solve() {
-    const fname = document.getElementById('fname');
-    const lname = document.getElementById('lname');
-    const email = document.getElementById('email');
-    const birth = document.getElementById('birth');
-    const position = document.getElementById('position');
-    const salary = document.getElementById('salary');
-    const tbody = document.getElementById('tbody');
-    const addSalary = document.getElementById('sum');
+    const inputs = Object.fromEntries(
+        Array.from(document.querySelectorAll('input, textarea'))
+            .map(i => [i.id, i]));
 
-    document.getElementById("add-worker").addEventListener("click", (e) => {
-        e.preventDefault();
-        if (fname.value &&
-            lname.value &&
-            email.value &&
-            birth.value &&
-            position.value &&
-            salary.value
-        ) {
-            addEmployee(e,
-                fname.value,
-                lname.value,
-                email.value,
-                birth.value,
-                position.value,
-                salary.value);
+    const addBtn = document.getElementById('add');
 
-            clearInputFields();
+    function onResetClick(ev) {
+        ev.preventDefault();
+        clearInput();
+    }
+
+    document.getElementById('reset').addEventListener('click', onResetClick);
+
+    addBtn.addEventListener('click', onAddClick);
+
+    function onAddClick(ev) {
+        ev.preventDefault();
+        if (!isValid()) return;
+
+        let data = getData();
+        const li = getElements();
+        document.getElementById('list').appendChild(li);
+        clearInput();
+
+
+        function getElements() {
+            const li = createElement('li');
+            li.appendChild(createElement('h4', `Title: ${data.title}`));
+            li.appendChild(createElement('h4', `Recipient Name: ${data.recipientName}`));
+            li.appendChild(createElement('span', data.message));
+            const div = createElement('div', '', 'list-action');
+            const sendBtn = createElement('button', 'Send');
+            sendBtn.id = 'send';
+            sendBtn.type = 'submit';
+            const deleteBtn = createElement('button', 'Delete');
+            deleteBtn.id = 'delete';
+            deleteBtn.type = 'submit';
+            div.appendChild(sendBtn);
+            div.appendChild(deleteBtn);
+            li.appendChild(div);
+
+            sendBtn.addEventListener('click', onSendClick)
+            deleteBtn.addEventListener('click', (ev) => {
+                ev.preventDefault();
+                li.remove();
+                const sent = createElement('li');
+                sent.appendChild(createElement('span', `To: ${data.recipientName}`));
+                sent.appendChild(createElement('span', `Title: ${data.title}`));
+                document.querySelector('.delete-list').appendChild(sent);
+            })
+
+            function onSendClick() {
+                const sent = createElement('li');
+                sent.appendChild(createElement('span', `To: ${data.recipientName}`));
+                sent.appendChild(createElement('span', `Title: ${data.title}`));
+                const sentDiv = createElement('div', '', 'btn');
+                const sentDeleteBtn = createElement('button', 'Delete', 'delete');
+                sentDeleteBtn.type = 'submit';
+                sentDiv.appendChild(sentDeleteBtn);
+                sent.appendChild(sentDiv);
+                sentDeleteBtn.addEventListener('click', (ev) => {
+                    ev.preventDefault();
+                    sentDiv.remove();
+                    document.querySelector('.delete-list').appendChild(sent);
+                })
+                li.remove();
+                document.querySelector('.sent-list').appendChild(sent);
+            }
+
+            return li;
         }
-    });
-
-    function addEmployee(e, fname, lname, email, birth, position, salary) {
-        const tr = createElement("tr");
-        createElement('td', `${fname}`, tr);
-        createElement('td', `${lname}`, tr);
-        createElement('td', `${email}`, tr);
-        createElement('td', `${birth}`, tr);
-        createElement('td', `${position}`, tr);
-        createElement('td', `${salary}`, tr);
-
-        const td = createElement("td", "", tr);
-        let fireBtn = createElement('button', "fired", td);
-        fireBtn.setAttribute('class', 'fired');
-        let editBtn = createElement("button", "Edit", td);
-        editBtn.setAttribute("class", "edit");
-        tbody.appendChild(tr);
-
-        const currentSalary = Number(addSalary.textContent);
-        addSalary.textContent = (Number(salary) + currentSalary).toFixed(2);
-        editBtn.addEventListener('click', (e) =>
-            editWorker(e, fname, lname, email, birth, position, salary)
-        );
-
-        fireBtn.addEventListener("click", (e) => fireEmployee(e, salary))
-
     }
 
-    function fireEmployee(e, salary) {
-        e.preventDefault();
-        e.target.parentNode.parentNode.remove();
-        reduceCurrentSalarySum(salary);
-    }
 
-    function editWorker(
-        e,
-        firstName,
-        lastName,
-        emailAdress,
-        birthDate,
-        currentPosition,
-        currentSalary
-    ) {
-        e.preventDefault();
-        e.target.parentNode.parentNode.remove();
-        fname.value = firstName;
-        lname.value = lastName;
-        email.value = emailAdress;
-        birth.value = birthDate;
-        position.value = currentPosition;
-        salary.value = currentSalary;
-        reduceCurrentSalarySum(currentSalary);
-
-    }
-
-    function reduceCurrentSalarySum(salary) {
-        const sumSalary = Number(addSalary.textContent);
-        addSalary.textContent = Math.abs((Number(salary) - sumSalary)).toFixed(2);
-
-    }
-
-    function createElement(type, content, parent) {
+    function createElement(type, text, cssClass) {
         const element = document.createElement(type);
-        element.textContent = content;
-        if (parent) {
-            parent.appendChild(element);
+        if (text) {
+            element.textContent = text;
         }
 
+        if (cssClass) {
+            element.className = cssClass;
+        }
         return element;
     }
 
-    function clearInputFields() {
-        fname.value = '';
-        lname.value = '';
-        email.value = '';
-        birth.value = '';
-        position.value = '';
-        salary.value = '';
+    function getData() {
+        return Object.fromEntries(
+            Object.entries(inputs)
+                .map(([name, input]) => [name, input.value])
+        );
+    }
+
+    function isValid() {
+        return Object.values(inputs)
+            .every(i => i.value);
+    }
+
+    function clearInput() {
+        Object.values(inputs).forEach(i => i.value = '');
     }
 }
 solve()
-//
-console.log("-----------");
-
-// function solve() {
-//     let salarySum = 0;
-//     const inputs = getInputs();
-
-//     document.getElementById('add-worker')
-//         .addEventListener('click', onAddWorkerClick);
-
-//     function onAddWorkerClick(ev) {
-//         ev.preventDefault();
-//         if (!isValid()) return;
-//         createRow();
-//         clearInput();
-//     }
-
-//     function setInputsData(data) {
-//         Object.entries(inputs)
-//             .forEach(([name, input]) => input.value = data[name]);
-//     }
-
-//     function createRow() {
-//         const data = getData();
-//         data.salary = Number(data.salary);
-//         const tr = createElement('tr');
-//         tr.appendChild(createElement('td',data.fname));
-//         tr.appendChild(createElement('td',data.lname));
-//         tr.appendChild(createElement('td',data.email));
-//         tr.appendChild(createElement('td',data.birth));
-//         tr.appendChild(createElement('td',data.position));
-//         tr.appendChild(createElement('td',data.salary));
-//         const firedBtn = createElement('button', 'Fired', 'fired');
-//         const editBtn = createElement('button', 'Edit', 'edit');
-//         const tdAction = createElement('td');
-//         tdAction.appendChild(firedBtn);
-//         tdAction.appendChild(editBtn);
-//         tr.appendChild(tdAction);
-//         document.getElementById('tbody').appendChild(tr);
-//         salarySum += data.salary;
-//         document.getElementById('sum').textContent = salarySum.toFixed(2);
-
-//         editBtn.addEventListener('click', (ev)=>{
-//             ev.preventDefault();
-//             tr.remove();
-//             salarySum -= data.salary;
-//             document.getElementById('sum').textContent = salarySum.toFixed(2);
-//             setInputsData(data);
-//         });
-
-//         firedBtn.addEventListener('click', (ev)=>{
-//             ev.preventDefault();
-//             tr.remove();
-//             salarySum -= data.salary;
-//             document.getElementById('sum').textContent = salarySum.toFixed(2);
-//         });
-//     }
-
-//     function getInputs() {
-//         return Object.fromEntries(
-//             Array.from(document.querySelectorAll('input, textarea'))
-//                 .map(i => [i.id, i]));
-//     }
-
-//     function createElement(type, text, cssClass) {
-//         const element = document.createElement(type);
-//         if (text) {
-//             element.textContent = text;
-//         }
-
-//         if (cssClass) {
-//             element.className = cssClass;
-//         }
-//         return element;
-//     }
-
-//     function getData() {
-//         return Object.fromEntries(
-//             Object.entries(inputs)
-//                 .map(([name, input]) => [name, input.value])
-//         );
-//     }
-
-//     function isValid() {
-//         return Object.values(inputs)
-//             .every(i => i.value);
-//     }
-
-//     function clearInput() {
-//         Object.values(inputs).forEach(i => i.value = '');
-//     }
-// }
-// solve();
